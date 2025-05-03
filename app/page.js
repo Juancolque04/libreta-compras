@@ -5,7 +5,7 @@ import Link from "next/link"
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-800 text-pink-500 px-4 py-10 -mt-10">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-800 text-pink-500 px-4 py-10 -mt-8">
       <div className="w-full max-w-md space-y-8">
         <h1 className="text-center text-4xl font-extrabold tracking-tight">Libreta de Compras</h1>
 

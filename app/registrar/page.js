@@ -131,10 +131,8 @@ export default function RegistrarCompra() {
       </Link>
 
       <Card className="bg-white rounded-2xl shadow-lg mt-36">
-        <CardHeader className="px-6 pt-6">
-          <CardTitle className="text-center text-2xl font-semibold text-gray-800">
-            Registrar Compra
-          </CardTitle>
+        <CardHeader >
+        <CardTitle className="text-center text-2xl font-semibold">Registrar Compras</CardTitle>
         </CardHeader>
         <CardContent className="px-6 pb-6">
           <form className="space-y-4">

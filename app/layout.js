@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Libreta de Compras",
   description: "Sistema para registrar y consultar compras",
-  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+  viewport: "width=device-width, initial-scale=1.0",
 }
 
 export default function RootLayout({ children }) {
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={`${inter.className} overflow-hidden touch-none`}>{children}</body>
+      <body className={`${inter.className} overflow-x-hidden overscroll-none`}>{children}</body>
     </html>
   )
 }
