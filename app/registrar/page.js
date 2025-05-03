@@ -111,7 +111,7 @@ export default function RegistrarCompra() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-800 p-4">
+    <div className="h-screen overflow-hidden bg-neutral-800 p-4">
       <ToastContainer
         position="top-right"
         autoClose={3000}
