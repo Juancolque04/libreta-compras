@@ -7,13 +7,24 @@ import { Edit, Trash2 } from "lucide-react"
 const formatCurrency = (amount) =>
   new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(amount || 0)
 
-const formatDate = (dateString) => {
-  // dateString: "YYYY-MM-DD HH:MM:SS"
-  const [datePart, timePart] = dateString.split(" ")
+const formatDate = (rawValue) => {
+  if (!rawValue) return ""
+  // rawValue puede ser:
+  // - "YYYY-MM-DD HH:MM:SS"
+  // - "YYYY-MM-DDTHH:MM:SS.sssZ"
+  // - incluso un objeto Date (por si acaso)
+  let dateString = rawValue
+  if (rawValue instanceof Date) {
+    dateString = rawValue.toISOString()
+  }
+  // Normalizar: transformar "T" en espacio, quitar la Z y fracciones
+  dateString = dateString.replace("T", " ").replace("Z", "").split(".")[0]
+  // Ahora dateString = "YYYY-MM-DD HH:MM:SS"
+  const [datePart, timePart = "00:00:00"] = dateString.split(" ")
   const [year, month, day] = datePart.split("-").map(Number)
   const [hour, minute, second] = timePart.split(":").map(Number)
 
-  // Construyo un Date en local con esos componentes:
+  // Crear Date en zona local
   const date = new Date(year, month - 1, day, hour, minute, second)
 
   return new Intl.DateTimeFormat("es-AR", {
@@ -26,7 +37,7 @@ const formatDate = (dateString) => {
 }
 
 export default function ComprasTable({ compras, onEdit, onDelete }) {
-  if (compras.length === 0) {
+  if (!Array.isArray(compras) || compras.length === 0) {
     return <div className="text-center py-8 text-gray-500">No se encontraron compras</div>
   }
 
