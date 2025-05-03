@@ -9,13 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft } from "lucide-react"
 
 import ComprasTable from "@/components/compras-table"
@@ -39,6 +33,15 @@ export default function HistorialCompras() {
   const [selectedCompra, setSelectedCompra] = useState(null)
   const [editOpen, setEditOpen] = useState(false)
   const [delOpen, setDelOpen] = useState(false)
+
+  // Aplicar la clase para permitir scroll en esta página
+  useEffect(() => {
+    document.body.classList.add("allow-scroll")
+
+    return () => {
+      document.body.classList.remove("allow-scroll")
+    }
+  }, [])
 
   useEffect(() => {
     fetchCompras()
@@ -67,7 +70,6 @@ export default function HistorialCompras() {
     })
   }
 
-  // === aplicarFiltroFechas revisada ===
   const aplicarFiltroFechas = (data) => {
     // Si no hay fechas seleccionadas devolvemos todo
     if (!fechaInicio && !fechaFin) return data
@@ -94,15 +96,12 @@ export default function HistorialCompras() {
       // Convertimos "YYYY-MM-DD HH:MM:SS" → [YYYY,MM,DD,HH,MM,SS]
       const [datePart, timePart] = compra.fecha.split(" ")
       const [yy, mm, dd] = datePart.split("-").map(Number)
-      const [hh = 0, mi = 0, ss = 0] = timePart
-        ? timePart.split(":").map(Number)
-        : [0, 0, 0]
+      const [hh = 0, mi = 0, ss = 0] = timePart ? timePart.split(":").map(Number) : [0, 0, 0]
       const compDate = new Date(yy, mm - 1, dd, hh, mi, ss)
 
       return compDate >= start && compDate <= end
     })
   }
-  // ====================================
 
   const aplicarTodosFiltros = (data = compras) => {
     const porVendUser = aplicarFiltrosVendedorUsuario(data)
@@ -118,8 +117,7 @@ export default function HistorialCompras() {
     aplicarTodosFiltros(compras)
   }
 
-  const calcularTotal = () =>
-    filteredCompras.reduce((acc, c) => acc + Number(c.monto), 0)
+  const calcularTotal = () => filteredCompras.reduce((acc, c) => acc + Number(c.monto), 0)
 
   const handleEdit = (c) => {
     setSelectedCompra(c)
@@ -136,7 +134,7 @@ export default function HistorialCompras() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-800 p-4">
+    <div className="min-h-screen bg-neutral-800 p-4 pb-20">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -153,9 +151,7 @@ export default function HistorialCompras() {
 
       <Card className="rounded-2xl shadow-lg border border-gray-200 bg-white mb-6">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-semibold">
-            Historial de Compras
-          </CardTitle>
+          <CardTitle className="text-center text-2xl font-semibold">Historial de Compras</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Filtros de Vendedor y Usuario */}
