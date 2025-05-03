@@ -8,7 +8,14 @@ const formatCurrency = (amount) =>
   new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(amount || 0)
 
 const formatDate = (dateString) => {
-  const date = new Date(dateString)
+  // dateString: "YYYY-MM-DD HH:MM:SS"
+  const [datePart, timePart] = dateString.split(" ")
+  const [year, month, day] = datePart.split("-").map(Number)
+  const [hour, minute, second] = timePart.split(":").map(Number)
+
+  // Construyo un Date en local con esos componentes:
+  const date = new Date(year, month - 1, day, hour, minute, second)
+
   return new Intl.DateTimeFormat("es-AR", {
     day: "2-digit",
     month: "2-digit",
