@@ -22,6 +22,19 @@ const formatCurrency = (amount) =>
     currency: "ARS",
   }).format(amount || 0)
 
+// Helper para parsear cualquier string de fecha/hora a Date local
+const parseDateTime = (raw) => {
+  if (!raw) return null
+  // Si ya es Date
+  if (raw instanceof Date) return raw
+  // Normalizar string: convertir T-> espacio, quitar Z, eliminar milisegundos
+  let s = raw.replace("T", " ").replace("Z", "").split(".")[0]
+  const [datePart, timePart = "00:00:00"] = s.split(" ")
+  const [year, month, day] = datePart.split("-").map(Number)
+  const [hour, minute, second] = timePart.split(":").map(Number)
+  return new Date(year, month - 1, day, hour, minute, second)
+}
+
 export default function HistorialCompras() {
   const [compras, setCompras] = useState([])
   const [filteredCompras, setFilteredCompras] = useState([])
@@ -34,10 +47,8 @@ export default function HistorialCompras() {
   const [editOpen, setEditOpen] = useState(false)
   const [delOpen, setDelOpen] = useState(false)
 
-  // Aplicar la clase para permitir scroll en esta página
   useEffect(() => {
     document.body.classList.add("allow-scroll")
-
     return () => {
       document.body.classList.remove("allow-scroll")
     }
@@ -71,19 +82,15 @@ export default function HistorialCompras() {
   }
 
   const aplicarFiltroFechas = (data) => {
-    // Si no hay fechas seleccionadas devolvemos todo
     if (!fechaInicio && !fechaFin) return data
 
-    // Parseo manual de YYYY-MM-DD para evitar offset de zona horaria
     let start, end
-
     if (fechaInicio) {
       const [y1, m1, d1] = fechaInicio.split("-").map(Number)
       start = new Date(y1, m1 - 1, d1, 0, 0, 0, 0)
     } else {
-      start = new Date(1970, 0, 1, 0, 0, 0, 0)
+      start = new Date(1970, 0, 1)
     }
-
     if (fechaFin) {
       const [y2, m2, d2] = fechaFin.split("-").map(Number)
       end = new Date(y2, m2 - 1, d2, 23, 59, 59, 999)
@@ -93,12 +100,8 @@ export default function HistorialCompras() {
     }
 
     return data.filter((compra) => {
-      // Convertimos "YYYY-MM-DD HH:MM:SS" → [YYYY,MM,DD,HH,MM,SS]
-      const [datePart, timePart] = compra.fecha.split(" ")
-      const [yy, mm, dd] = datePart.split("-").map(Number)
-      const [hh = 0, mi = 0, ss = 0] = timePart ? timePart.split(":").map(Number) : [0, 0, 0]
-      const compDate = new Date(yy, mm - 1, dd, hh, mi, ss)
-
+      const compDate = parseDateTime(compra.fecha)
+      if (!compDate) return false
       return compDate >= start && compDate <= end
     })
   }
@@ -154,7 +157,6 @@ export default function HistorialCompras() {
           <CardTitle className="text-center text-2xl font-semibold">Historial de Compras</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Filtros de Vendedor y Usuario */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="vendedor" className="text-sm font-medium text-gray-700">
@@ -169,10 +171,8 @@ export default function HistorialCompras() {
                 </SelectTrigger>
                 <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl">
                   <SelectItem value="todos">Todos</SelectItem>
-                  {["Mirian", "Cecilia", "Mari", "Otro"].map((n) => (
-                    <SelectItem key={n} value={n}>
-                      {n}
-                    </SelectItem>
+                  {['Mirian', 'Cecilia', 'Mari', 'Otro'].map((n) => (
+                    <SelectItem key={n} value={n}>{n}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -190,17 +190,14 @@ export default function HistorialCompras() {
                 </SelectTrigger>
                 <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl">
                   <SelectItem value="todos">Todos</SelectItem>
-                  {["Natalia", "Juan"].map((u) => (
-                    <SelectItem key={u} value={u}>
-                      {u}
-                    </SelectItem>
+                  {['Natalia', 'Juan'].map((u) => (
+                    <SelectItem key={u} value={u}>{u}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          {/* Rango de Fechas */}
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -246,7 +243,6 @@ export default function HistorialCompras() {
         </CardContent>
       </Card>
 
-      {/* Resultados */}
       <Card className="rounded-2xl shadow-lg border border-gray-200 bg-white">
         <CardHeader>
           <CardTitle className="flex justify-between items-center text-sm font-medium">
@@ -265,7 +261,6 @@ export default function HistorialCompras() {
         </CardContent>
       </Card>
 
-      {/* Diálogos Editar / Eliminar */}
       {selectedCompra && (
         <>
           <EditCompraDialog
