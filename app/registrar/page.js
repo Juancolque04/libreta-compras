@@ -132,7 +132,7 @@ export default function RegistrarCompra() {
 
       <Card className="bg-white rounded-2xl shadow-lg mt-36">
         <CardHeader className="px-6 pt-6">
-          <CardTitle className="text-center text-xl font-semibold text-gray-800">
+          <CardTitle className="text-center text-2xl font-semibold text-gray-800">
             Registrar Compra
           </CardTitle>
         </CardHeader>
