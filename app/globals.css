@@ -1,29 +1,2 @@
 @import "tailwindcss";
 
-html,
-body {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-  -webkit-overflow-scrolling: none;
-  overscroll-behavior: none;
-}
-
-/* Permitir scroll en la página de historial */
-.allow-scroll {
-  overflow: auto;
-  position: static;
-  height: auto;
-  touch-action: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-/* Estilos para dispositivos móviles */
-@media (max-width: 640px) {
-  html {
-    font-size: 16px;
-  }
-}
