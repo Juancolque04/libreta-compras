@@ -111,7 +111,7 @@ export default function RegistrarCompra() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-800 p-4">
+    <div className="min-h-screen bg-neutral-800 p-4 mt-10">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -178,6 +178,8 @@ export default function RegistrarCompra() {
                   allowNegative={false}
                   placeholder="0,00"
                   onValueChange={(values) => setMonto(values.value)}
+                  inputMode="decimal"
+                  pattern="[0-9]*"
                 />
               </div>
             </div>
