@@ -130,7 +130,7 @@ export default function RegistrarCompra() {
         Volver
       </Link>
 
-      <Card className="bg-white rounded-2xl shadow-lg mt-20">
+      <Card className="bg-white rounded-2xl shadow-lg mt-36">
         <CardHeader className="px-6 pt-6">
           <CardTitle className="text-center text-xl font-semibold text-gray-800">
             Registrar Compra
