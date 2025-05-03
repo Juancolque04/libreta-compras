@@ -111,7 +111,7 @@ export default function RegistrarCompra() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-800 p-4 mt-10">
+    <div className="min-h-screen bg-neutral-800 p-4">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -130,7 +130,7 @@ export default function RegistrarCompra() {
         Volver
       </Link>
 
-      <Card className="bg-white rounded-2xl shadow-lg">
+      <Card className="bg-white rounded-2xl shadow-lg mt-10">
         <CardHeader className="px-6 pt-6">
           <CardTitle className="text-center text-xl font-semibold text-gray-800">
             Registrar Compra
@@ -196,9 +196,6 @@ export default function RegistrarCompra() {
                 onChange={(e) => setFecha(e.target.value)}
                 className="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-pink-400 p-1"
               />
-              <p className="text-xs text-gray-400">
-                Puedes ajustar la fecha y hora si lo deseas
-              </p>
             </div>
 
             {/* Botón que abre el diálogo */}
